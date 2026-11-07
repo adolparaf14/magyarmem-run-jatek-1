@@ -124,6 +124,7 @@
     .choice-btn[data-character="mouse"]::before { content: "🐭"; }
     .choice-btn[data-character="brendon"]::before { content: "🕶️"; }
     .choice-btn[data-character="isti"]::before { content: "🎤"; }
+    .choice-btn[data-character="kryszfn"]::before { content: "💖"; }
     .choice-btn[data-skin="rex"]::before { content: "🟢"; }
     .choice-btn[data-skin="lava"]::before { content: "🌋"; }
     .choice-btn[data-skin="ice"]::before { content: "🧊"; }
@@ -186,6 +187,9 @@
     .preview-scene[data-character="isti"] .dino-art, .preview-scene[data-character="isti"] .mouse-art, .preview-scene[data-character="isti"] .brendon-art { display: none; }
     .isti-art { display: none; position: absolute; z-index: 1; bottom: 64px; left: 50%; width: 114px; height: 136px; transform: translateX(-50%); object-fit: contain; }
     .preview-scene[data-character="isti"] .isti-art { display: block; animation: isti-run-cycle .4s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+    .kryszfn-art { display: none; position: absolute; z-index: 1; bottom: 45px; left: 50%; width: 116px; height: 145px; transform: translateX(-50%); object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,45,200,.65)); }
+    .preview-scene[data-character="kryszfn"] .dino-art, .preview-scene[data-character="kryszfn"] .mouse-art, .preview-scene[data-character="kryszfn"] .brendon-art, .preview-scene[data-character="kryszfn"] .isti-art { display: none; }
+    .preview-scene[data-character="kryszfn"] .kryszfn-art { display: block; }
     @keyframes isti-run-cycle {
       from { transform: translateX(-50%) translateY(0) rotate(-1deg); }
       to { transform: translateX(-50%) translateY(-5px) rotate(1deg); }
@@ -366,6 +370,43 @@
       .records-panel { padding-top: 4px; padding-bottom: 4px; }
       .record-row { padding-top: 2px; padding-bottom: 2px; }
     }
+    .mode-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(100%, 520px); margin-top: 16px; }
+    .mode-buttons .start-btn { width: 100%; margin-top: 0; padding: 12px 10px; font-size: 12px; }
+    .tactical-screen { display: flex; flex-direction: column; gap: 10px; min-height: 590px; padding: 18px; background: #17191c; }
+    .tactical-head, .tactical-stats, .tactical-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .tactical-head h2 { margin: 3px 0 0; font-family: Impact, "Arial Narrow", sans-serif; font-size: clamp(24px, 4vw, 36px); letter-spacing: 1px; }
+    .tactical-head .eyebrow { color: #b7bbc1; }
+    .tactical-stat { min-width: 76px; color: #aeb0b4; font-size: 10px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+    .tactical-stat strong { display: block; margin-top: 2px; color: #f0f0f0; font-size: 22px; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+    .tactical-stat.health strong { color: #a9d68b; }
+    .tactical-stat.ammo strong { color: #e6d69d; }
+    .tactical-view { position: relative; flex: 1; min-height: 260px; overflow: hidden; border: 2px solid #50545a; background: #25282c; touch-action: none; }
+    #tacticalCanvas { display: block; width: 100%; height: 100%; min-height: 260px; image-rendering: pixelated; cursor: crosshair; }
+    .tactical-crosshair { position: absolute; top: 50%; left: 50%; width: 15px; height: 15px; transform: translate(-50%, -50%); pointer-events: none; }
+    .tactical-crosshair::before, .tactical-crosshair::after { content: ""; position: absolute; background: #e5e6e8; box-shadow: 0 0 2px #111; }
+    .tactical-crosshair::before { top: 7px; left: 0; width: 15px; height: 1px; }
+    .tactical-crosshair::after { top: 0; left: 7px; width: 1px; height: 15px; }
+    .tactical-notice { position: absolute; top: 14px; left: 50%; max-width: 90%; padding: 7px 12px; transform: translateX(-50%); background: rgba(15,16,18,.82); color: #f0f0f0; font-size: 12px; font-weight: 900; text-align: center; pointer-events: none; }
+    .tactical-notice[hidden] { display: none; }
+    .tactical-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #b2b5ba; font-size: 11px; }
+    .tactical-controls { justify-content: flex-start; flex-wrap: wrap; }
+    .tactical-controls kbd { min-width: 27px; padding: 4px 6px; border: 1px solid #55585d; border-radius: 4px; background: #25272b; color: #f0f0f0; text-align: center; }
+    .tactical-touch { display: none; gap: 6px; }
+    .tactical-touch button { min-width: 42px; min-height: 40px; border: 1px solid #55585d; border-radius: 5px; background: #25272b; color: #f0f0f0; font-weight: 900; touch-action: none; }
+    .tactical-touch [data-action="fire"] { background: #5b3734; }
+    .tactical-exit { flex: 0 0 auto; padding: 8px 11px; }
+    @media (max-width: 700px) {
+      .mode-buttons { gap: 6px; margin-top: 8px; }
+      .mode-buttons .start-btn { padding: 9px 5px; font-size: 10px; }
+      .tactical-screen { min-height: 0; padding: 9px; gap: 7px; }
+      .tactical-head h2 { font-size: 23px; }
+      .tactical-stat { min-width: 48px; font-size: 8px; }
+      .tactical-stat strong { font-size: 17px; }
+      .tactical-view, #tacticalCanvas { min-height: 0; }
+      .tactical-bottom { align-items: flex-start; flex-direction: column; font-size: 9px; }
+      .tactical-touch { display: flex; }
+      .tactical-exit { padding: 7px 9px; }
+    }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
 </head>
@@ -437,6 +478,7 @@
               <button class="choice-btn" data-character="mouse" aria-pressed="false"><span class="choice-name">Űregér</span><span class="choice-meta">Feloldás · 30 🪙</span></button>
               <button class="choice-btn" data-character="brendon" aria-pressed="false"><span class="choice-name">Lakatos Brendon</span><span class="choice-meta">Feloldás · 150 🪙</span></button>
               <button class="choice-btn" data-character="isti" aria-pressed="false"><span class="choice-name">MC Isti</span><span class="choice-meta">Feloldás · 200 🪙</span></button>
+              <button class="choice-btn" data-character="kryszfn" aria-pressed="false"><span class="choice-name">KRYSZFN</span><span class="choice-meta">Feloldás · 1000 🪙</span></button>
             </div>
             <span class="subsection-label">Színek és megvásárolható kinézetek</span>
             <div class="choice-grid" role="group" aria-label="Karakter színének kiválasztása">
@@ -465,7 +507,10 @@
               <button class="diff-btn" data-speed="1.25" aria-pressed="false">Vadon</button>
             </div>
           </section>
-          <button id="startGame" class="start-btn"><span class="arrow">▶</span> Játék indítása</button>
+          <div class="mode-buttons">
+            <button id="startGame" class="start-btn"><span class="arrow">▶</span> Futójáték</button>
+            <button id="startTactical" class="start-btn"><span class="arrow">⚡</span> Low-poly FPS</button>
+          </div>
         </div>
         <aside class="lobby-side" aria-label="Pálya-előnézet és rekordlista">
           <div class="preview-scene">
@@ -476,6 +521,7 @@
             <div class="mouse-art" aria-hidden="true"><div class="mouse-tail"></div><div class="mouse-body"><div class="mouse-foot one"></div><div class="mouse-foot two"></div></div><div class="mouse-head"><div class="mouse-ear left"></div><div class="mouse-ear right"></div><div class="mouse-eye"></div><div class="mouse-nose"></div><div class="mouse-whiskers"></div></div></div>
             <div class="brendon-art" aria-hidden="true"><div class="brendon-arm"></div><div class="brendon-arm right"></div><div class="brendon-body"><span class="brendon-shirt-label">GuLakatos</span></div><div class="brendon-necklace"><span class="brendon-pendant"></span></div><div class="brendon-leg"></div><div class="brendon-leg right"></div><div class="brendon-shoe"></div><div class="brendon-shoe right"></div><div class="brendon-head"><div class="brendon-hair"></div><div class="brendon-eye"></div><div class="brendon-glasses"></div><div class="brendon-smile"></div><div class="brendon-earring"></div></div></div>
             <img id="istiSprite" class="isti-art" src="mc-isti.png" alt="" aria-hidden="true">
+            <img id="kryszfnSprite" class="kryszfn-art" src="kryszfn.png" alt="" aria-hidden="true">
             <div class="side-caption"><span>SAJÁT REKORD</span><span><b id="lobbyBest">00000</b></span></div>
           </div>
           <section class="records-panel" aria-labelledby="recordsTitle">
@@ -495,7 +541,30 @@
           <canvas id="gameCanvas" width="900" height="320" aria-label="Futójáték terület"></canvas>
           <div id="overlay" class="game-overlay" hidden><div class="overlay-panel"><h3 id="overlayTitle">Szünet</h3><p id="overlayText">Nyomj egy gombot a folytatáshoz.</p><button id="overlayButton" class="start-btn">Folytatás <span class="arrow">▶</span></button></div></div>
         </div>
-        <div class="game-controls"><div class="control-keys"><span>UGRÁS</span><kbd>SPACE</kbd><kbd>↑</kbd><span>érintés = ugrás · repülőnél maradj lent</span></div><label class="volume-control" for="musicVolume"><span aria-hidden="true">🔊</span><span>Hang</span><input id="musicVolume" type="range" min="0" max="100" value="65" aria-label="Zene hangereje"><output id="musicVolumeValue" for="musicVolume">65%</output></label><button id="backToLobby" class="diff-btn">Kilépés a lobbyba</button></div>
+        <div class="game-controls"><div class="control-keys"><span>UGRÁS</span><kbd>SPACE</kbd><kbd>↑</kbd><kbd>CTRL</kbd><span>csúszás · érintés = ugrás · trambulin után 15 mp plafonfutás</span></div><span id="ceilingWalkStatus" hidden aria-live="polite"></span><label class="volume-control" for="musicVolume"><span aria-hidden="true">🔊</span><span>Hang</span><input id="musicVolume" type="range" min="0" max="100" value="65" aria-label="Zene hangereje"><output id="musicVolumeValue" for="musicVolume">65%</output></label><button id="backToLobby" class="diff-btn">Kilépés a lobbyba</button></div>
+      </section>
+      <section id="tactical" class="screen tactical-screen" hidden>
+        <div class="tactical-head">
+          <div><div class="eyebrow">GRAFIT · 01. PÁLYA</div><h2>Raktárnegyed</h2></div>
+          <div class="tactical-stats">
+            <div class="tactical-stat health">Élet<strong id="tacticalHealth">100</strong></div>
+            <div class="tactical-stat">Találat<strong id="tacticalKills">0 / 5</strong></div>
+            <div class="tactical-stat ammo">Tár<strong id="tacticalAmmo">12 / 48</strong></div>
+            <div class="tactical-stat">Idő<strong id="tacticalTime">75</strong></div>
+          </div>
+        </div>
+        <div class="tactical-view" id="tacticalView">
+          <canvas id="tacticalCanvas" width="320" height="180" aria-label="Low-poly FPS játéktér"></canvas>
+          <div class="tactical-crosshair" aria-hidden="true"></div>
+          <div class="tactical-notice" id="tacticalNotice" hidden></div>
+        </div>
+        <div class="tactical-bottom">
+          <div class="tactical-controls"><span><kbd>WASD</kbd> Mozgás</span><span><kbd>← →</kbd> Fordulás</span><span><kbd>EGÉR</kbd> Célzás / lövés</span><span><kbd>R</kbd> Újratöltés</span><span><kbd>SHIFT</kbd> Futás</span></div>
+          <div class="tactical-touch" aria-label="Érintőképernyős vezérlés">
+            <button data-action="forward" aria-label="Előre">↑</button><button data-action="left" aria-label="Balra">←</button><button data-action="back" aria-label="Hátra">↓</button><button data-action="right" aria-label="Jobbra">→</button><button data-action="fire">LÖVÉS</button><button data-action="reload">TÁR</button>
+          </div>
+          <button id="exitTactical" class="diff-btn tactical-exit">Kilépés</button>
+        </div>
       </section>
     </section>
     <footer class="footer"><span>Magyar MeMe Run · 2026</span><span>Maradj mozgásban</span></footer>
@@ -506,16 +575,28 @@
   const login = document.getElementById('login');
   const lobby = document.getElementById('lobby');
   const game = document.getElementById('game');
+  const tactical = document.getElementById('tactical');
+  const tacticalCanvas = document.getElementById('tacticalCanvas');
+  const tacticalCtx = tacticalCanvas.getContext('2d');
+  const tacticalNotice = document.getElementById('tacticalNotice');
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   const istiSprite = document.getElementById('istiSprite');
   let istiSpriteReady = istiSprite.complete && istiSprite.naturalWidth > 0;
   istiSprite.addEventListener('load', () => { istiSpriteReady = true; }, { once: true });
   istiSprite.addEventListener('error', () => { throw new Error('Nem sikerült betölteni az MC Isti karakterképét: mc-isti.png'); }, { once: true });
+  const kryszfnSprite = document.getElementById('kryszfnSprite');
+  let kryszfnSpriteReady = kryszfnSprite.complete && kryszfnSprite.naturalWidth > 0;
+  const kryszfnBodySprite = document.createElement('canvas');
+  const kryszfnLeftLegSprite = document.createElement('canvas');
+  const kryszfnRightLegSprite = document.createElement('canvas');
+  kryszfnSprite.addEventListener('load', () => { kryszfnSpriteReady = true; }, { once: true });
+  kryszfnSprite.addEventListener('error', () => { throw new Error('Nem sikerült betölteni a KRYSZFN skinképét: kryszfn.png'); }, { once: true });
   const overlay = document.getElementById('overlay');
   const overlayTitle = document.getElementById('overlayTitle');
   const overlayText = document.getElementById('overlayText');
   const overlayButton = document.getElementById('overlayButton');
+  const ceilingWalkStatus = document.getElementById('ceilingWalkStatus');
   const musicButton = document.getElementById('musicButton');
   const musicVolumeSlider = document.getElementById('musicVolume');
   const musicVolumeValue = document.getElementById('musicVolumeValue');
@@ -527,8 +608,8 @@
   const loginButton = document.getElementById('loginButton');
   const profileStorageKey = 'oskorisSprintProfiles';
   const passwordIterations = 210000;
-  const characters = ['dino', 'mouse', 'brendon', 'isti'];
-  const characterUnlockCosts = { dino: 0, mouse: 30, brendon: 150, isti: 0 };
+  const characters = ['dino', 'mouse', 'brendon', 'isti', 'kryszfn'];
+  const characterUnlockCosts = { dino: 0, mouse: 30, brendon: 150, isti: 0, kryszfn: 1000 };
   const worlds = {
     dunes: { title: 'Napkő-dűnék', sky: '#11183b', sun: '#ffe28a', hill: '#414da0', farHill: '#272d67', ground: '#10152f', cactus: '#68f5ce', horizon: '#7b72ff', portal: '#69ffe0' },
     dusk: { title: 'Alkony-szurdok', sky: '#25143e', sun: '#ff72c6', hill: '#78429b', farHill: '#3e3578', ground: '#17112f', cactus: '#ff8caa', horizon: '#ff70cf', portal: '#ff8ce8' },
@@ -591,6 +672,10 @@
   let score = 0;
   let currentMilestone = -1;
   let milestoneCaveActive = false;
+  let crouching = false;
+  let ceilingWalkActive = false;
+  let ceilingWalkTimer = 0;
+  let trampolineSpawned = false;
   let speed = 5;
   let lastTime = 0;
   let musicContext = null;
@@ -660,6 +745,7 @@
     login.hidden = screen !== login;
     lobby.hidden = screen !== lobby;
     game.hidden = screen !== game;
+    tactical.hidden = screen !== tactical;
   }
   function currentProfile() {
     return activeUser ? profiles[activeUser] : null;
@@ -751,7 +837,7 @@
       button.setAttribute('aria-pressed', String(profile.world === id));
       button.querySelector('.choice-meta').textContent = unlocked ? (profile.world === id ? 'Kiválasztva' : 'Feloldva') : `Zárva · ${formatScore(worldUnlocks[id])}`;
     });
-    document.querySelectorAll('[data-skin]').forEach(button => {
+    document.querySelectorAll('button[data-skin]').forEach(button => {
       const id = button.dataset.skin;
       const unlocked = profile.unlockedSkins.includes(id) || !skins[id].cost && Number(profile.best) >= skinUnlocks[id];
       const cost = skins[id].cost;
@@ -800,6 +886,11 @@
     profile.unlockedCharacters = Array.isArray(profile.unlockedCharacters) ? profile.unlockedCharacters : ['dino'];
     if (!profile.unlockedCharacters.includes('dino')) profile.unlockedCharacters.push('dino');
     if (!profile.unlockedCharacters.includes('isti')) profile.unlockedCharacters.push('isti');
+    if (profile.skin === 'kryszfn') {
+      if (!profile.unlockedCharacters.includes('kryszfn')) profile.unlockedCharacters.push('kryszfn');
+      profile.character = 'kryszfn';
+      profile.skin = 'rex';
+    }
     unlockProgress(profile);
     profile.unlockedWorlds = profile.unlockedWorlds.includes(profile.world || 'dunes') ? profile.unlockedWorlds : ['dunes', ...profile.unlockedWorlds];
     profile.unlockedSkins = profile.unlockedSkins.includes(profile.skin || 'rex') ? profile.unlockedSkins : ['rex', ...profile.unlockedSkins];
@@ -945,7 +1036,7 @@
     renderSelections();
     saveProfiles();
   }));
-  document.querySelectorAll('[data-skin]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('button[data-skin]').forEach(button => button.addEventListener('click', () => {
     const profile = currentProfile();
     const id = button.dataset.skin;
     const skin = skins[id];
@@ -996,6 +1087,10 @@
     score = 0;
     currentMilestone = -1;
     milestoneCaveActive = false;
+    crouching = false;
+    ceilingWalkActive = false;
+    ceilingWalkTimer = 0;
+    trampolineSpawned = false;
     visualWorld = getConfiguredWorld();
     musicStage = -1;
     musicStep = 0;
@@ -1005,9 +1100,11 @@
     runCoins = 0;
     spawnTimer = .82 / worldSpeedScale;
     coinSpawnTimer = 1.1 / worldSpeedScale;
+    dino.h = 52 * gameScale;
     dino.y = groundY - dino.h;
     dino.vy = 0;
     dino.grounded = true;
+    ceilingWalkStatus.hidden = true;
     running = true;
     paused = false;
     gameOver = false;
@@ -1202,6 +1299,7 @@
     if (milestone < 0) return;
     const caveActive = score < 1200;
     if (milestone === currentMilestone && caveActive === milestoneCaveActive) return;
+    const wasCave = Boolean(visualWorld.cave);
     currentMilestone = milestone;
     milestoneCaveActive = caveActive;
     if (caveActive) {
@@ -1219,19 +1317,29 @@
         cave: true,
         city: false
       };
+      if (!wasCave) obstacles = [];
       document.querySelector('#game .game-head h2').textContent = `Nagy sötét barlang · ${Math.floor(score)}`;
       setMusicStage(milestone);
       return;
     }
     const stage = milestoneStages[milestone % milestoneStages.length];
     visualWorld = { ...getConfiguredWorld(), ...stage.world, title: stage.title };
+    if (wasCave) obstacles = [];
     document.querySelector('#game .game-head h2').textContent = `${stage.title} · ${Math.floor(score)}`;
     setMusicStage(milestone);
   }
 
+  function setCrouching(active) {
+    if (ceilingWalkActive || !dino.grounded) return;
+    crouching = active;
+    dino.h = 52 * gameScale * (crouching ? .58 : 1);
+    dino.y = groundY - dino.h;
+  }
+
   function jump() {
     if (!running || paused || gameOver) return;
-    if (dino.grounded) {
+    if (dino.grounded && !ceilingWalkActive) {
+      if (crouching) setCrouching(false);
       dino.vy = -690 * gameScale;
       dino.grounded = false;
     }
@@ -1262,33 +1370,88 @@
   }
 
   function drawDino() {
-    if (activeCharacter === 'mouse') {
-      drawMouse();
-      return;
+    ctx.save();
+    const originalY = dino.y;
+    if (ceilingWalkActive) {
+      ctx.translate(dino.x + dino.w / 2, dino.y + dino.h / 2);
+      ctx.rotate(Math.PI);
+      ctx.translate(-dino.x - dino.w / 2, -dino.y - dino.h / 2);
+    } else if (crouching && dino.grounded) {
+      dino.y = groundY - 52 * gameScale;
+      ctx.translate(dino.x, groundY);
+      ctx.scale(1, .58);
+      ctx.translate(-dino.x, -groundY);
     }
-    if (activeCharacter === 'brendon') {
-      drawBrendon();
-      return;
+    if (activeCharacter === 'kryszfn') drawKryszfn();
+    else if (activeCharacter === 'mouse') drawMouse();
+    else if (activeCharacter === 'brendon') drawBrendon();
+    else if (activeCharacter === 'isti') drawIsti();
+    else {
+      const x = dino.x, y = dino.y;
+      const size = gameScale;
+      const skinColor = getSkinColor();
+      ctx.fillStyle = skinColor;
+      ctx.strokeStyle = '#143638';
+      ctx.lineWidth = 3 * size;
+      ctx.beginPath(); ctx.roundRect(x + 4 * size, y + 13 * size, 33 * size, 39 * size, 8 * size); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(x + 22 * size, y, 29 * size, 27 * size, 8 * size); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fffdf6'; ctx.fillRect(x + 39 * size, y + 8 * size, 5 * size, 5 * size);
+      ctx.fillStyle = '#143638'; ctx.fillRect(x + 41 * size, y + 9 * size, 2 * size, 3 * size);
+      ctx.fillStyle = visualWorld.farHill;
+      ctx.fillRect(x + 10 * size, y + 47 * size, 10 * size, 10 * size); ctx.fillRect(x + 29 * size, y + 47 * size, 10 * size, 10 * size);
+      if (dino.grounded && running && !paused && !gameOver && Math.floor(score / 5) % 2 === 0) {
+        ctx.fillRect(x + 28 * size, y + 44 * size, 10 * size, 6 * size);
+      }
     }
-    if (activeCharacter === 'isti') {
-      drawIsti();
-      return;
+    dino.y = originalY;
+    ctx.restore();
+  }
+
+  function drawKryszfn() {
+    if (!kryszfnSpriteReady) return;
+    const x = dino.x, y = dino.y, size = gameScale;
+    const runningOnGround = running && dino.grounded && !paused && !gameOver;
+    const width = 54 * size;
+    const height = 54 * size;
+    const spriteX = -width / 2;
+    const spriteY = -height;
+    const hipY = Math.round(kryszfnSprite.naturalHeight * .78);
+    if (kryszfnBodySprite.width !== kryszfnSprite.naturalWidth) {
+      [kryszfnBodySprite, kryszfnLeftLegSprite, kryszfnRightLegSprite].forEach(layer => {
+        layer.width = kryszfnSprite.naturalWidth;
+        layer.height = kryszfnSprite.naturalHeight;
+      });
+      const bodyContext = kryszfnBodySprite.getContext('2d');
+      bodyContext.drawImage(kryszfnSprite, 0, 0);
+      bodyContext.clearRect(0, hipY, kryszfnSprite.naturalWidth, kryszfnSprite.naturalHeight - hipY);
+      const splitX = Math.floor(kryszfnSprite.naturalWidth / 2);
+      [[kryszfnLeftLegSprite, 0, splitX], [kryszfnRightLegSprite, splitX, kryszfnSprite.naturalWidth - splitX]].forEach(([layer, legX, legWidth]) => {
+        const legContext = layer.getContext('2d');
+        legContext.drawImage(kryszfnSprite, 0, 0);
+        legContext.clearRect(0, 0, kryszfnSprite.naturalWidth, hipY);
+        if (legX === 0) legContext.clearRect(legWidth, hipY, kryszfnSprite.naturalWidth - legWidth, kryszfnSprite.naturalHeight - hipY);
+        else legContext.clearRect(0, hipY, legX, kryszfnSprite.naturalHeight - hipY);
+      });
     }
-    const x = dino.x, y = dino.y;
-    const size = gameScale;
-    const skinColor = getSkinColor();
-    ctx.fillStyle = skinColor;
-    ctx.strokeStyle = '#143638';
-    ctx.lineWidth = 3 * size;
-    ctx.beginPath(); ctx.roundRect(x + 4 * size, y + 13 * size, 33 * size, 39 * size, 8 * size); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.roundRect(x + 22 * size, y, 29 * size, 27 * size, 8 * size); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#fffdf6'; ctx.fillRect(x + 39 * size, y + 8 * size, 5 * size, 5 * size);
-    ctx.fillStyle = '#143638'; ctx.fillRect(x + 41 * size, y + 9 * size, 2 * size, 3 * size);
-    ctx.fillStyle = visualWorld.farHill;
-    ctx.fillRect(x + 10 * size, y + 47 * size, 10 * size, 10 * size); ctx.fillRect(x + 29 * size, y + 47 * size, 10 * size, 10 * size);
-    if (dino.grounded && running && !paused && !gameOver && Math.floor(score / 5) % 2 === 0) {
-      ctx.fillRect(x + 28 * size, y + 44 * size, 10 * size, 6 * size);
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    ctx.translate(x + dino.w / 2, y + dino.h);
+    if (runningOnGround) {
+      const stride = Math.sin(score * 1.7) * .18;
+      [[kryszfnLeftLegSprite, .37, stride], [kryszfnRightLegSprite, .63, -stride]].forEach(([leg, hipX, angle]) => {
+        const pivotX = spriteX + width * hipX;
+        const pivotY = spriteY + height * .78;
+        ctx.save();
+        ctx.translate(pivotX, pivotY);
+        ctx.rotate(angle);
+        ctx.drawImage(leg, -width * hipX, -height * .78, width, height);
+        ctx.restore();
+      });
+      ctx.drawImage(kryszfnBodySprite, spriteX, spriteY, width, height);
+    } else {
+      ctx.drawImage(kryszfnSprite, spriteX, spriteY, width, height);
     }
+    ctx.restore();
   }
 
   function drawMouse() {
@@ -1657,8 +1820,110 @@
     ctx.restore();
   }
 
+  function drawStalagmite(obstacle) {
+    const { x, y, w, h } = obstacle;
+    const size = gameScale;
+    const stone = ctx.createLinearGradient(x, y, x + w, y + h);
+    stone.addColorStop(0, '#d6a7c7');
+    stone.addColorStop(.55, '#72566f');
+    stone.addColorStop(1, '#282331');
+    ctx.fillStyle = stone;
+    ctx.strokeStyle = '#211b2a';
+    ctx.lineWidth = 2 * size;
+    ctx.beginPath();
+    ctx.moveTo(x, groundY);
+    ctx.lineTo(x + w * .18, y + h * .42);
+    ctx.lineTo(x + w * .43, y + h * .17);
+    ctx.lineTo(x + w * .58, y);
+    ctx.lineTo(x + w * .76, y + h * .5);
+    ctx.lineTo(x + w, groundY);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,232,255,.48)';
+    ctx.lineWidth = size;
+    ctx.beginPath();
+    ctx.moveTo(x + w * .58, y + 3 * size);
+    ctx.lineTo(x + w * .48, y + h * .72);
+    ctx.stroke();
+  }
+
+  function drawSpider(obstacle) {
+    const { x, y, w, h } = obstacle;
+    const size = gameScale;
+    ctx.strokeStyle = '#cf9bdd';
+    ctx.lineWidth = 2 * size;
+    for (let leg = 0; leg < 4; leg++) {
+      const startY = y + h * (.2 + leg * .2);
+      for (const side of [-1, 1]) {
+        const startX = x + w * (side < 0 ? .35 : .65);
+        const endX = x + w * (side < 0 ? .05 : .95);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + side * w * .08, startY - h * .2);
+        ctx.lineTo(endX, startY + h * (leg - 1.5) * .1);
+        ctx.stroke();
+      }
+    }
+    ctx.fillStyle = '#a654b0';
+    ctx.beginPath(); ctx.ellipse(x + w * .5, y + h * .54, w * .3, h * .39, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffb8f5';
+    ctx.beginPath(); ctx.arc(x + w * .43, y + h * .45, 1.8 * size, 0, Math.PI * 2); ctx.arc(x + w * .57, y + h * .45, 1.8 * size, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawBat(obstacle) {
+    const { x, y, w, h } = obstacle;
+    const flap = Math.sin(score * .55) * h * .28;
+    ctx.fillStyle = '#27213c';
+    ctx.strokeStyle = '#a88bcd';
+    ctx.lineWidth = 1.5 * gameScale;
+    ctx.beginPath();
+    ctx.moveTo(x + w * .5, y + h * .48);
+    ctx.quadraticCurveTo(x + w * .2, y - flap, x, y + h * .08 + flap);
+    ctx.lineTo(x + w * .19, y + h * .82);
+    ctx.lineTo(x + w * .4, y + h * .62);
+    ctx.quadraticCurveTo(x + w * .5, y + h, x + w * .6, y + h * .62);
+    ctx.lineTo(x + w * .82, y + h * .82);
+    ctx.lineTo(x + w, y + h * .08 - flap);
+    ctx.quadraticCurveTo(x + w * .8, y - flap, x + w * .5, y + h * .48);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ff7dba';
+    ctx.beginPath(); ctx.arc(x + w * .43, y + h * .4, 1.8 * gameScale, 0, Math.PI * 2); ctx.arc(x + w * .57, y + h * .4, 1.8 * gameScale, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawTrampoline(obstacle) {
+    const { x, y, w, h } = obstacle;
+    const size = gameScale;
+    ctx.strokeStyle = '#d9d4ff';
+    ctx.lineWidth = 3 * size;
+    ctx.beginPath();
+    ctx.moveTo(x + w * .16, y + h);
+    ctx.lineTo(x + w * .25, groundY);
+    ctx.moveTo(x + w * .84, y + h);
+    ctx.lineTo(x + w * .75, groundY);
+    ctx.stroke();
+    ctx.fillStyle = '#ff76cb';
+    ctx.shadowColor = '#ff76cb';
+    ctx.shadowBlur = 10 * size;
+    ctx.beginPath(); ctx.roundRect(x, y, w, 7 * size, 4 * size); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#a1ffe4';
+    ctx.lineWidth = 2 * size;
+    for (let spring = 0; spring < 4; spring++) {
+      const springX = x + w * (.2 + spring * .2);
+      ctx.beginPath();
+      ctx.moveTo(springX, y + 8 * size);
+      ctx.lineTo(springX + (spring % 2 ? 2 : -2) * size, groundY - 2 * size);
+      ctx.stroke();
+    }
+  }
+
   function drawObstacle(obstacle) {
-    if (obstacle.type === 'pterodactyl') drawPterodactyl(obstacle);
+    if (obstacle.type === 'trampoline') drawTrampoline(obstacle);
+    else if (obstacle.type === 'stalagmite') drawStalagmite(obstacle);
+    else if (obstacle.type === 'spider') drawSpider(obstacle);
+    else if (obstacle.type === 'bat') drawBat(obstacle);
+    else if (obstacle.type === 'pterodactyl') drawPterodactyl(obstacle);
     else if (obstacle.type === 'meteor') drawMeteor(obstacle);
     else if (obstacle.type === 'rock') drawRock(obstacle);
     else if (obstacle.type === 'crystal') drawCrystal(obstacle);
@@ -1684,12 +1949,8 @@
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(worldWidth, 0);
-    for (let x = worldWidth; x >= 0; x -= 46 * size) {
-      const depth = (22 + (Math.floor(x / (46 * size)) * 37 % 86)) * size;
-      ctx.lineTo(x, 0);
-      ctx.lineTo(x - 15 * size, depth);
-      ctx.lineTo(x - 29 * size, 0);
-    }
+    ctx.lineTo(worldWidth, 10 * size);
+    ctx.quadraticCurveTo(worldWidth * .5, 17 * size, 0, 9 * size);
     ctx.closePath();
     ctx.fill();
 
@@ -1843,12 +2104,50 @@
     updateMilestoneStage();
     if (score > best) { best = score; updateBest(); persistBest(); }
     speed = Math.min(7 * speedFactor + score / 180, 13 * speedFactor);
-    dino.vy += (dino.vy > 0 ? 3000 : 2100) * gameScale * dt;
-    dino.y += dino.vy * dt;
-    if (dino.y >= groundY - dino.h) { dino.y = groundY - dino.h; dino.vy = 0; dino.grounded = true; }
+    if (score >= 500 && !trampolineSpawned) {
+      trampolineSpawned = true;
+      obstacles.push({ type: 'trampoline', x: worldWidth + 10 * gameScale, y: groundY - 18 * gameScale, w: 90 * gameScale, h: 18 * gameScale, used: false });
+    }
+    const previousDinoBottom = dino.y + dino.h;
+    if (ceilingWalkActive) {
+      ceilingWalkTimer = Math.max(0, ceilingWalkTimer - dt);
+      if (ceilingWalkTimer === 0) {
+        ceilingWalkActive = false;
+        crouching = false;
+        dino.h = 52 * gameScale;
+        dino.y = 10 * gameScale;
+        dino.vy = 0;
+        dino.grounded = false;
+        ceilingWalkStatus.hidden = true;
+      } else {
+        dino.y = 10 * gameScale;
+        dino.vy = 0;
+        dino.grounded = true;
+        const remaining = `${Math.ceil(ceilingWalkTimer)} mp plafonfutás`;
+        if (ceilingWalkStatus.textContent !== remaining) ceilingWalkStatus.textContent = remaining;
+      }
+    }
+    if (!ceilingWalkActive) {
+      dino.vy += (dino.vy > 0 ? 3000 : 2100) * gameScale * dt;
+      dino.y += dino.vy * dt;
+      if (dino.y >= groundY - dino.h) { dino.y = groundY - dino.h; dino.vy = 0; dino.grounded = true; }
+    }
     spawnTimer -= dt;
     if (spawnTimer <= 0) {
-      if (Math.random() < .32) {
+      if (visualWorld.cave) {
+        const caveHazard = Math.random();
+        if (caveHazard < .43) {
+          const height = 22 * gameScale;
+          obstacles.push({ type: 'bat', x: worldWidth + 10 * gameScale, y: groundY - (48 + Math.random() * 38) * gameScale, w: 38 * gameScale, h: height });
+        } else if (caveHazard < .73) {
+          const height = 21 * gameScale;
+          obstacles.push({ type: 'spider', x: worldWidth + 10 * gameScale, y: groundY - height, w: 32 * gameScale, h: height });
+        } else {
+          const height = (30 + Math.random() * 22) * gameScale;
+          obstacles.push({ type: 'stalagmite', x: worldWidth + 10 * gameScale, y: groundY - height, w: (28 + Math.random() * 22) * gameScale, h: height });
+        }
+        spawnTimer = (.62 + Math.random() * .38) / worldSpeedScale;
+      } else if (Math.random() < .32) {
         const type = Math.random() < .7 ? 'pterodactyl' : 'meteor';
         const height = (type === 'pterodactyl' ? 42 : 40) * gameScale;
         obstacles.push({
@@ -1880,7 +2179,7 @@
           obstacles.push({ type: 'drone', x: worldWidth + 10 * gameScale, y: groundY - 60 * gameScale, w: 48 * gameScale, h: height });
         }
       }
-      spawnTimer = (Math.max(.92, 1.3 - score / 1500) + Math.random() * .45) / worldSpeedScale;
+      if (!visualWorld.cave) spawnTimer = (Math.max(.92, 1.3 - score / 1500) + Math.random() * .45) / worldSpeedScale;
     }
     coinSpawnTimer -= dt;
     if (coinSpawnTimer <= 0) {
@@ -1897,6 +2196,23 @@
     }
     obstacles.forEach(item => item.x -= speed * 60 * worldSpeedScale * dt);
     obstacles = obstacles.filter(item => item.x + item.w > -5 * gameScale);
+    const landedOnTrampoline = !ceilingWalkActive && obstacles.find(item =>
+      item.type === 'trampoline' && !item.used && dino.vy >= 0 &&
+      previousDinoBottom <= item.y + 6 * gameScale && dino.y + dino.h >= item.y &&
+      dino.x + dino.w * .85 > item.x && dino.x + dino.w * .15 < item.x + item.w
+    );
+    if (landedOnTrampoline) {
+      landedOnTrampoline.used = true;
+      ceilingWalkActive = true;
+      ceilingWalkTimer = 15;
+      crouching = false;
+      dino.h = 52 * gameScale;
+      dino.y = 10 * gameScale;
+      dino.vy = 0;
+      dino.grounded = true;
+      ceilingWalkStatus.textContent = '15 mp plafonfutás';
+      ceilingWalkStatus.hidden = false;
+    }
     coins.forEach(coin => { coin.x -= speed * 60 * worldSpeedScale * dt; });
     const remainingCoins = [];
     let collectedCoins = 0;
@@ -1927,9 +2243,18 @@
         portal.phase = Math.random() * Math.PI * 2;
       }
     });
-    const hit = obstacles.some(item => {
+    const hit = !ceilingWalkActive && obstacles.some(item => {
+      if (item.type === 'trampoline') return false;
       const bird = item.type === 'pterodactyl';
-      const groundHazard = ['cactus', 'rock', 'crystal'].includes(item.type);
+      const groundHazard = ['cactus', 'rock', 'crystal', 'stalagmite', 'spider'].includes(item.type);
+      if (item.type === 'bat') {
+        const dinoLeft = dino.x + dino.w * .2;
+        const dinoRight = dino.x + dino.w * .8;
+        const dinoTop = dino.y + 5 * gameScale;
+        const dinoBottom = dino.y + dino.h - 4 * gameScale;
+        return dinoRight > item.x + item.w * .12 && dinoLeft < item.x + item.w * .88 &&
+          dinoBottom > item.y + item.h * .12 && dinoTop < item.y + item.h * .9;
+      }
       const obstacleTop = groundHazard ? groundY - item.h : item.y + (bird ? item.h * .18 : 0);
       const obstacleBottom = groundHazard ? groundY : item.y + item.h * (bird ? .84 : 1);
       const obstacleLeft = item.x + (bird ? item.w * .16 : item.type === 'drone' ? item.w * .12 : 4 * gameScale);
@@ -1945,6 +2270,420 @@
     if (hit) { endGame(); draw(); return; }
     requestAnimationFrame(loop);
   }
+
+  const tacticalMap = [
+    '##############',
+    '#....#.......#',
+    '#....#.......#',
+    '#............#',
+    '#.##.....##..#',
+    '#............#',
+    '#....##......#',
+    '#............#',
+    '#......##....#',
+    '#............#',
+    '#..##.....##.#',
+    '#............#',
+    '#...........B#',
+    '##############'
+  ];
+  const tacticalFov = Math.PI / 3;
+  const tacticalKeys = new Set();
+  const tacticalPlayer = { x: 2.5, y: 2.5, angle: 0, health: 100, ammo: 12, reserve: 48, kills: 0 };
+  let tacticalEnemies = [];
+  let tacticalRunning = false;
+  let tacticalFinished = false;
+  let tacticalTime = 75;
+  let tacticalLastTime = 0;
+  let tacticalFireCooldown = 0;
+  let tacticalReloadTime = 0;
+  let tacticalDamageFlash = 0;
+  let tacticalNoticeTimer = 0;
+  let tacticalMouseX = null;
+  let tacticalTouchPointer = null;
+  let tacticalTouchX = null;
+  let tacticalZBuffer = [];
+
+  function tacticalWallAt(x, y) {
+    const tileX = Math.floor(x);
+    const tileY = Math.floor(y);
+    return !tacticalMap[tileY] || tacticalMap[tileY][tileX] === '#';
+  }
+
+  function tacticalRay(originX, originY, angle) {
+    const directionX = Math.cos(angle);
+    const directionY = Math.sin(angle);
+    let mapX = Math.floor(originX);
+    let mapY = Math.floor(originY);
+    const deltaX = Math.abs(1 / (directionX || .00001));
+    const deltaY = Math.abs(1 / (directionY || .00001));
+    const stepX = directionX < 0 ? -1 : 1;
+    const stepY = directionY < 0 ? -1 : 1;
+    let sideX = (directionX < 0 ? originX - mapX : mapX + 1 - originX) * deltaX;
+    let sideY = (directionY < 0 ? originY - mapY : mapY + 1 - originY) * deltaY;
+    let side = 0;
+    let distance = 16;
+    for (let step = 0; step < 32; step++) {
+      if (sideX < sideY) {
+        sideX += deltaX;
+        mapX += stepX;
+        side = 0;
+      } else {
+        sideY += deltaY;
+        mapY += stepY;
+        side = 1;
+      }
+      if (!tacticalMap[mapY] || tacticalMap[mapY][mapX] === '#') {
+        distance = side === 0 ? sideX - deltaX : sideY - deltaY;
+        break;
+      }
+    }
+    return { distance: Math.max(.02, distance), side, mapX, mapY, directionX, directionY };
+  }
+
+  function tacticalHasLineOfSight(x1, y1, x2, y2) {
+    const distance = Math.hypot(x2 - x1, y2 - y1);
+    const steps = Math.ceil(distance * 8);
+    for (let index = 1; index < steps; index++) {
+      const progress = index / steps;
+      if (tacticalWallAt(x1 + (x2 - x1) * progress, y1 + (y2 - y1) * progress)) return false;
+    }
+    return true;
+  }
+
+  function showTacticalNotice(message, duration = 1.4) {
+    tacticalNotice.textContent = message;
+    tacticalNotice.hidden = false;
+    tacticalNoticeTimer = duration;
+  }
+
+  function updateTacticalHud() {
+    document.getElementById('tacticalHealth').textContent = String(Math.max(0, Math.ceil(tacticalPlayer.health)));
+    document.getElementById('tacticalKills').textContent = `${tacticalPlayer.kills} / 5`;
+    document.getElementById('tacticalAmmo').textContent = `${tacticalPlayer.ammo} / ${tacticalPlayer.reserve}`;
+    document.getElementById('tacticalTime').textContent = String(Math.ceil(tacticalTime));
+  }
+
+  function finishTacticalGame(message) {
+    tacticalRunning = false;
+    tacticalFinished = true;
+    tacticalKeys.clear();
+    tacticalNoticeTimer = 0;
+    showTacticalNotice(`${message} · ENTER: új kör`, 999);
+    if (document.pointerLockElement === tacticalCanvas) document.exitPointerLock();
+    const profile = currentProfile();
+    if (profile) {
+      profile.fpsKills = Math.max(Number(profile.fpsKills) || 0, tacticalPlayer.kills);
+      saveProfiles();
+    }
+    updateTacticalHud();
+  }
+
+  function startTacticalGame() {
+    tacticalPlayer.x = 2.5;
+    tacticalPlayer.y = 3.5;
+    tacticalPlayer.angle = 0;
+    tacticalPlayer.health = 100;
+    tacticalPlayer.ammo = 12;
+    tacticalPlayer.reserve = 48;
+    tacticalPlayer.kills = 0;
+    tacticalEnemies = [
+      { x: 8.5, y: 3.5, health: 2, cooldown: 1.4 },
+      { x: 11.5, y: 4.5, health: 2, cooldown: 1.4 },
+      { x: 3.5, y: 7.5, health: 2, cooldown: 1.8 },
+      { x: 10.5, y: 8.5, health: 2, cooldown: 1.1 },
+      { x: 11.5, y: 11.5, health: 2, cooldown: 2 }
+    ];
+    tacticalTime = 75;
+    tacticalFireCooldown = 0;
+    tacticalReloadTime = 0;
+    tacticalDamageFlash = 0;
+    tacticalFinished = false;
+    tacticalRunning = true;
+    tacticalKeys.clear();
+    tacticalNotice.hidden = true;
+    tacticalMouseX = null;
+    updateTacticalHud();
+    showScreen(tactical);
+    tacticalLastTime = performance.now();
+    renderTacticalGame();
+    requestAnimationFrame(tacticalLoop);
+  }
+
+  function reloadTacticalWeapon() {
+    if (!tacticalRunning || tacticalReloadTime || tacticalPlayer.ammo === 12 || !tacticalPlayer.reserve) return;
+    tacticalReloadTime = .8;
+    showTacticalNotice('ÚJRATÖLTÉS…', .8);
+  }
+
+  function fireTacticalWeapon() {
+    if (!tacticalRunning || tacticalFireCooldown > 0 || tacticalReloadTime) return;
+    if (!tacticalPlayer.ammo) {
+      showTacticalNotice('ÜRES TÁR · R A TÖLTÉSHEZ', 1);
+      return;
+    }
+    tacticalPlayer.ammo--;
+    tacticalFireCooldown = .2;
+    const ray = tacticalRay(tacticalPlayer.x, tacticalPlayer.y, tacticalPlayer.angle);
+    const focal = tacticalCanvas.width / (2 * Math.tan(tacticalFov / 2));
+    let target = null;
+    let closest = Infinity;
+    tacticalEnemies.forEach(enemy => {
+      if (enemy.health <= 0) return;
+      const dx = enemy.x - tacticalPlayer.x;
+      const dy = enemy.y - tacticalPlayer.y;
+      const distance = Math.hypot(dx, dy);
+      let angleDifference = Math.atan2(dy, dx) - tacticalPlayer.angle;
+      while (angleDifference > Math.PI) angleDifference -= Math.PI * 2;
+      while (angleDifference < -Math.PI) angleDifference += Math.PI * 2;
+      const projectedX = tacticalCanvas.width / 2 + Math.tan(angleDifference) * focal;
+      const targetWidth = Math.max(4, focal * .42 / distance);
+      if (Math.abs(projectedX - tacticalCanvas.width / 2) < targetWidth * .42 &&
+          distance < ray.distance - .12 && distance < closest) {
+        target = enemy;
+        closest = distance;
+      }
+    });
+    if (target) {
+      target.health--;
+      if (target.health <= 0) {
+        tacticalPlayer.kills++;
+        showTacticalNotice('TALÁLAT · CÉLPONT KIÜTVE');
+        if (tacticalPlayer.kills >= 5) {
+          finishTacticalGame('GYŐZELEM · TISZTA TERÜLET');
+        }
+      } else {
+        showTacticalNotice('TALÁLAT');
+      }
+    }
+    updateTacticalHud();
+  }
+
+  function renderTacticalGame() {
+    const width = tacticalCanvas.width;
+    const height = tacticalCanvas.height;
+    const horizon = Math.floor(height * .47);
+    tacticalCtx.fillStyle = '#303338';
+    tacticalCtx.fillRect(0, 0, width, horizon);
+    tacticalCtx.fillStyle = '#55585d';
+    tacticalCtx.fillRect(0, horizon, width, height - horizon);
+    tacticalCtx.fillStyle = '#62656a';
+    for (let y = horizon + 16; y < height; y += 22) {
+      tacticalCtx.fillRect(0, y, width, 1);
+    }
+    tacticalZBuffer = new Array(width).fill(16);
+    const focal = width / (2 * Math.tan(tacticalFov / 2));
+    for (let screenX = 0; screenX < width; screenX += 2) {
+      const cameraX = (screenX / width - .5) * 2;
+      const rayAngle = tacticalPlayer.angle + Math.atan(cameraX * Math.tan(tacticalFov / 2));
+      const hit = tacticalRay(tacticalPlayer.x, tacticalPlayer.y, rayAngle);
+      const correctedDistance = hit.distance * Math.cos(rayAngle - tacticalPlayer.angle);
+      tacticalZBuffer[screenX] = correctedDistance;
+      tacticalZBuffer[screenX + 1] = correctedDistance;
+      const wallHeight = Math.min(height * 1.8, focal / correctedDistance);
+      const wallTop = Math.floor(horizon - wallHeight / 2);
+      const wallX = hit.side === 0
+        ? tacticalPlayer.y + hit.distance * hit.directionY
+        : tacticalPlayer.x + hit.distance * hit.directionX;
+      const texture = wallX - Math.floor(wallX);
+      const shade = Math.max(34, 128 - correctedDistance * 8 - (hit.side ? 22 : 0));
+      const color = Math.floor(shade + texture * 12);
+      tacticalCtx.fillStyle = `rgb(${color},${color + 2},${color + 5})`;
+      tacticalCtx.fillRect(screenX, wallTop, 2, wallHeight);
+      if (texture < .07 || texture > .93) {
+        tacticalCtx.fillStyle = `rgba(15,16,18,${Math.max(.15, .55 - correctedDistance * .025)})`;
+        tacticalCtx.fillRect(screenX, wallTop, 2, wallHeight);
+      }
+      tacticalCtx.fillStyle = 'rgba(255,255,255,.07)';
+      tacticalCtx.fillRect(screenX, wallTop, 2, 1);
+    }
+    tacticalEnemies.slice().sort((left, right) =>
+      Math.hypot(right.x - tacticalPlayer.x, right.y - tacticalPlayer.y) -
+      Math.hypot(left.x - tacticalPlayer.x, left.y - tacticalPlayer.y)
+    ).forEach(enemy => {
+      if (enemy.health <= 0) return;
+      const dx = enemy.x - tacticalPlayer.x;
+      const dy = enemy.y - tacticalPlayer.y;
+      const distance = Math.hypot(dx, dy);
+      let angleDifference = Math.atan2(dy, dx) - tacticalPlayer.angle;
+      while (angleDifference > Math.PI) angleDifference -= Math.PI * 2;
+      while (angleDifference < -Math.PI) angleDifference += Math.PI * 2;
+      if (Math.abs(angleDifference) > tacticalFov * .72) return;
+      const screenX = Math.floor(width / 2 + Math.tan(angleDifference) * focal);
+      if (screenX < -30 || screenX >= width + 30 || distance > tacticalZBuffer[Math.max(0, Math.min(width - 1, screenX))]) return;
+      const bodyHeight = Math.min(height * .78, focal * .9 / distance);
+      const bodyWidth = Math.max(5, bodyHeight * .42);
+      const top = horizon - bodyHeight * .55;
+      const left = screenX - bodyWidth / 2;
+      tacticalCtx.fillStyle = '#222428';
+      tacticalCtx.fillRect(left - 2, top + bodyHeight * .22, bodyWidth + 4, bodyHeight * .72);
+      tacticalCtx.fillStyle = '#85898f';
+      tacticalCtx.fillRect(left + bodyWidth * .2, top, bodyWidth * .6, bodyHeight * .25);
+      tacticalCtx.fillStyle = '#5c6066';
+      tacticalCtx.fillRect(left, top + bodyHeight * .26, bodyWidth, bodyHeight * .45);
+      tacticalCtx.fillStyle = '#a4a7ac';
+      tacticalCtx.fillRect(left + bodyWidth * .12, top + bodyHeight * .3, bodyWidth * .18, bodyHeight * .35);
+      tacticalCtx.fillStyle = '#34373c';
+      tacticalCtx.fillRect(left + bodyWidth * .12, top + bodyHeight * .72, bodyWidth * .25, bodyHeight * .28);
+      tacticalCtx.fillRect(left + bodyWidth * .63, top + bodyHeight * .72, bodyWidth * .25, bodyHeight * .28);
+      tacticalCtx.fillStyle = '#d1d2d4';
+      tacticalCtx.fillRect(left + bodyWidth * .42, top + bodyHeight * .08, 2, 2);
+      tacticalCtx.fillRect(left + bodyWidth * .57, top + bodyHeight * .08, 2, 2);
+    });
+    tacticalCtx.fillStyle = '#292b2f';
+    tacticalCtx.fillRect(width * .43, height * .77, width * .18, height * .24);
+    tacticalCtx.fillStyle = '#50545a';
+    tacticalCtx.fillRect(width * .48, height * .75, width * .1, height * .2);
+    tacticalCtx.fillStyle = '#74787e';
+    tacticalCtx.fillRect(width * .52, height * .73, width * .02, height * .1);
+    if (tacticalDamageFlash > 0) {
+      tacticalCtx.fillStyle = `rgba(160,35,30,${Math.min(.32, tacticalDamageFlash * .18)})`;
+      tacticalCtx.fillRect(0, 0, width, height);
+    }
+  }
+
+  function moveTacticalPlayer(dt) {
+    const turnSpeed = 2.25 * dt;
+    if (tacticalKeys.has('ArrowLeft')) tacticalPlayer.angle -= turnSpeed;
+    if (tacticalKeys.has('ArrowRight')) tacticalPlayer.angle += turnSpeed;
+    let forward = Number(tacticalKeys.has('KeyW') || tacticalKeys.has('ArrowUp')) -
+      Number(tacticalKeys.has('KeyS') || tacticalKeys.has('ArrowDown'));
+    let strafe = Number(tacticalKeys.has('KeyD')) - Number(tacticalKeys.has('KeyA'));
+    forward += Number(tacticalKeys.has('touchForward')) - Number(tacticalKeys.has('touchBack'));
+    strafe += Number(tacticalKeys.has('touchRight')) - Number(tacticalKeys.has('touchLeft'));
+    const magnitude = Math.hypot(forward, strafe) || 1;
+    const speed = (tacticalKeys.has('ShiftLeft') || tacticalKeys.has('ShiftRight') ? 3.8 : 2.6) * dt / magnitude;
+    const moveX = (Math.cos(tacticalPlayer.angle) * forward - Math.sin(tacticalPlayer.angle) * strafe) * speed;
+    const moveY = (Math.sin(tacticalPlayer.angle) * forward + Math.cos(tacticalPlayer.angle) * strafe) * speed;
+    if (!tacticalWallAt(tacticalPlayer.x + moveX + Math.sign(moveX) * .18, tacticalPlayer.y)) tacticalPlayer.x += moveX;
+    if (!tacticalWallAt(tacticalPlayer.x, tacticalPlayer.y + moveY + Math.sign(moveY) * .18)) tacticalPlayer.y += moveY;
+  }
+
+  function updateTacticalEnemies(dt) {
+    tacticalEnemies.forEach(enemy => {
+      if (enemy.health <= 0) return;
+      enemy.cooldown -= dt;
+      const dx = tacticalPlayer.x - enemy.x;
+      const dy = tacticalPlayer.y - enemy.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance > 2.5 && distance < 9 && tacticalHasLineOfSight(enemy.x, enemy.y, tacticalPlayer.x, tacticalPlayer.y)) {
+        const stepX = dx / distance * Math.min(.38 * dt, distance - 2.3);
+        const stepY = dy / distance * Math.min(.38 * dt, distance - 2.3);
+        if (!tacticalWallAt(enemy.x + stepX, enemy.y)) enemy.x += stepX;
+        if (!tacticalWallAt(enemy.x, enemy.y + stepY)) enemy.y += stepY;
+      }
+      if (distance < 7 && enemy.cooldown <= 0 && tacticalHasLineOfSight(enemy.x, enemy.y, tacticalPlayer.x, tacticalPlayer.y)) {
+        enemy.cooldown = 1.35 + Math.random() * .7;
+        if (Math.random() < .72) {
+          tacticalPlayer.health -= 8;
+          tacticalDamageFlash = .7;
+          updateTacticalHud();
+        }
+      }
+    });
+  }
+
+  function tacticalLoop(now) {
+    if (!tacticalRunning) return;
+    const dt = Math.min((now - tacticalLastTime) / 1000, .04);
+    tacticalLastTime = now;
+    tacticalTime = Math.max(0, tacticalTime - dt);
+    tacticalFireCooldown = Math.max(0, tacticalFireCooldown - dt);
+    tacticalDamageFlash = Math.max(0, tacticalDamageFlash - dt);
+    tacticalNoticeTimer = Math.max(0, tacticalNoticeTimer - dt);
+    if (!tacticalNoticeTimer) tacticalNotice.hidden = true;
+    moveTacticalPlayer(dt);
+    updateTacticalEnemies(dt);
+    if (tacticalReloadTime > 0) {
+      tacticalReloadTime -= dt;
+      if (tacticalReloadTime <= 0) {
+        const loaded = Math.min(12 - tacticalPlayer.ammo, tacticalPlayer.reserve);
+        tacticalPlayer.ammo += loaded;
+        tacticalPlayer.reserve -= loaded;
+        updateTacticalHud();
+      }
+    }
+    renderTacticalGame();
+    if (tacticalPlayer.health <= 0) {
+      finishTacticalGame('ELBuktál · PRÓBÁLD ÚJRA');
+      return;
+    }
+    if (tacticalTime <= 0) {
+      finishTacticalGame('LEJÁRT AZ IDŐ · PRÓBÁLD ÚJRA');
+      return;
+    }
+    requestAnimationFrame(tacticalLoop);
+  }
+
+  document.getElementById('startTactical').addEventListener('click', startTacticalGame);
+  document.getElementById('exitTactical').addEventListener('click', () => {
+    tacticalRunning = false;
+    tacticalKeys.clear();
+    if (document.pointerLockElement === tacticalCanvas) document.exitPointerLock();
+    showScreen(lobby);
+  });
+  tacticalCanvas.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    if (event.pointerType === 'touch') {
+      tacticalTouchPointer = event.pointerId;
+      tacticalTouchX = event.clientX;
+    }
+    fireTacticalWeapon();
+    if (event.pointerType !== 'touch' && tacticalCanvas.requestPointerLock && document.pointerLockElement !== tacticalCanvas) {
+      const lockRequest = tacticalCanvas.requestPointerLock();
+      if (lockRequest && typeof lockRequest.catch === 'function') {
+        lockRequest.catch(() => showTacticalNotice('EGÉRZÁR NEM ELÉRHETŐ · MOZGASD A KURZORT', 2));
+      }
+    }
+  });
+  tacticalCanvas.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'touch' || event.pointerId !== tacticalTouchPointer || tacticalTouchX === null) return;
+    tacticalPlayer.angle += (event.clientX - tacticalTouchX) * .012;
+    tacticalTouchX = event.clientX;
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => tacticalCanvas.addEventListener(type, event => {
+    if (event.pointerId === tacticalTouchPointer) {
+      tacticalTouchPointer = null;
+      tacticalTouchX = null;
+    }
+  }));
+  document.addEventListener('mousemove', event => {
+    if (tactical.hidden || !tacticalRunning) return;
+    if (document.pointerLockElement === tacticalCanvas) {
+      tacticalPlayer.angle += event.movementX * .0028;
+    } else {
+      const bounds = tacticalCanvas.getBoundingClientRect();
+      const currentX = event.clientX - bounds.left;
+      if (tacticalMouseX !== null && currentX >= 0 && currentX <= bounds.width) {
+        tacticalPlayer.angle += (currentX - tacticalMouseX) * .006;
+      }
+      tacticalMouseX = currentX;
+    }
+  });
+  tacticalCanvas.addEventListener('pointerleave', () => { tacticalMouseX = null; });
+  document.querySelectorAll('.tactical-touch [data-action]').forEach(button => {
+    const action = button.dataset.action;
+    button.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      if (action === 'fire') fireTacticalWeapon();
+      else if (action === 'reload') reloadTacticalWeapon();
+      else tacticalKeys.add(`touch${action[0].toUpperCase()}${action.slice(1)}`);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => button.addEventListener(type, () => {
+      tacticalKeys.delete(`touch${action[0].toUpperCase()}${action.slice(1)}`);
+    }));
+  });
+  document.addEventListener('keydown', event => {
+    if (tactical.hidden) return;
+    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight'].includes(event.code)) {
+      event.preventDefault();
+      tacticalKeys.add(event.code);
+    }
+    if (event.code === 'KeyR') reloadTacticalWeapon();
+    if (event.code === 'Enter' && tacticalFinished) startTacticalGame();
+  });
+  document.addEventListener('keyup', event => tacticalKeys.delete(event.code));
+  window.addEventListener('blur', () => { tacticalKeys.clear(); tacticalMouseX = null; });
 
   document.getElementById('startGame').addEventListener('click', startGame);
   document.getElementById('pauseButton').addEventListener('click', togglePause);
@@ -1971,9 +2710,17 @@
   document.getElementById('canvasWrap').addEventListener('pointerdown', event => { if (event.target === canvas || event.target === document.getElementById('canvasWrap')) jump(); });
   document.addEventListener('keydown', event => {
     if (['Space', 'ArrowUp'].includes(event.code)) { event.preventDefault(); if (!game.hidden) jump(); }
+    if (['ControlLeft', 'ControlRight'].includes(event.code) && !game.hidden) {
+      event.preventDefault();
+      if (!event.repeat && running && !paused && !gameOver) setCrouching(true);
+    }
     if (event.code === 'KeyP' && !game.hidden) togglePause();
     if (event.code === 'Enter' && gameOver && !game.hidden) startGame();
   });
+  document.addEventListener('keyup', event => {
+    if (['ControlLeft', 'ControlRight'].includes(event.code)) setCrouching(false);
+  });
+  window.addEventListener('blur', () => setCrouching(false));
   window.addEventListener('resize', () => {
     if (!game.hidden) {
       resizeGameCanvas();
